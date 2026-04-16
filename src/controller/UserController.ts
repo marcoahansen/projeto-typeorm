@@ -58,6 +58,27 @@ export class UserController {
         .json({ error: "Ocorreu um erro inesperado ao listar os usuários." });
     }
   }
+
+  async listById(req: Request, res: Response) {
+    try {
+      const id = Number(req.params.id);
+      if (isNaN(id)) {
+        res.status(400).json({ message: "ID inválido" });
+      }
+      const user = await this.userRepository.findOneBy({ id });
+      if (!user) {
+        res.status(404).json({ message: "Usuário não encontrado!" });
+      }
+      return res.json(user);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return res.status(400).json({ error: error.message });
+      }
+      return res
+        .status(500)
+        .json({ error: "Ocorreu um erro inesperado ao listar o usuário." });
+    }
+  }
   async delete(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);
