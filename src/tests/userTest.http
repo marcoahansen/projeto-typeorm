@@ -1,6 +1,9 @@
 GET http://localhost:3000/api/users
 
 ###
+GET http://localhost:3000/api/users/active
+
+###
 GET http://localhost:3000/api/users/3
 
 ###
@@ -26,3 +29,6 @@ Content-Type: application/json
   "firstName": "Marco Aurelio",
   "lastName": "Hansen"
 }
+
+###
+PATCH  http://localhost:3000/api/users/3/toggle
