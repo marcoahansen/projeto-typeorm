@@ -1,0 +1,12 @@
+POST http://localhost:3000/api/posts
+Content-Type: application/json
+
+{
+  "title": "Meu segundo post",
+  "content": "conteúdo do post",
+  "userId": 3
+}
+
+###
+
+GET http://localhost:3000/api/posts
