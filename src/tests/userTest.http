@@ -15,7 +15,8 @@ Content-Type: application/json
   "firstName": "Marco Aurelio 3",
   "lastName": "Hansen",
   "phone": "2499544-5421",
-  "email": "m2@m.com"
+  "email": "m2@m.com",
+  "password": "david1234!"
 }
 
 ###
@@ -24,11 +25,11 @@ DELETE http://localhost:3000/api/users/2
 
 ###
 
-PATCH  http://localhost:3000/api/users/10
+PATCH  http://localhost:3000/api/users/12
 Content-Type: application/json
 
 {
-  "email": "m3@m.com"
+  "lastName": "Hansen de Oliveira"
 }
 
 ###

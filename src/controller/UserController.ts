@@ -62,7 +62,7 @@ export class UserController {
       if (password) {
         user.password = await bcrypt.hash(password, 10);
       }
-      const errors = await validate(user);
+      const errors = await validate(user, { skipMissingProperties: true });
       if (errors.length > 0) {
         const formattedErrors = formatErrors(errors);
         throw new BadRequestError("Falha de validação", formattedErrors);

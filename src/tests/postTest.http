@@ -1,10 +1,11 @@
 POST http://localhost:3000/api/posts
 Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN_HERE
 
 {
   "title": "teste",
   "content": "teste teste teste",
-  "userId": 8
+  "userId": 12
 }
 
 ###
