@@ -1,6 +1,8 @@
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTc3NzU4NDMwNCwiZXhwIjoxNzc3NjEzMTA0fQ.QHKxW31Ji6QYNP5Kp3uYK5lyM9Hdlh0xJ7yfB1f_JVs
+
 POST http://localhost:3000/api/posts
 Content-Type: application/json
-Authorization: Bearer YOUR_ACCESS_TOKEN_HERE
+Authorization: Bearer {{authToken}}
 
 {
   "title": "teste",
@@ -9,12 +11,13 @@ Authorization: Bearer YOUR_ACCESS_TOKEN_HERE
 }
 
 ###
-PATCH  http://localhost:3000/api/posts/6
+PATCH  http://localhost:3000/api/posts/8
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 {
   "title": "teste testando",
-  "userId": 9
+  "userId": 12
 }
 
 ###
