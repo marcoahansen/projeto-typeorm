@@ -1,13 +1,18 @@
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTc3NzU4NDMwNCwiZXhwIjoxNzc3NjEzMTA0fQ.QHKxW31Ji6QYNP5Kp3uYK5lyM9Hdlh0xJ7yfB1f_JVs
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTc3NzU5MjY4NywiZXhwIjoxNzc3NjIxNDg3fQ.cYRsM9GAXpEO21RyTlMn87ygk5ZzNSJX3uBHqfePPY4 
+
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImlhdCI6MTc3NzU5Mjc4NCwiZXhwIjoxNzc3NjIxNTg0fQ.gi5PXr-qMjYoU-flyPqt1AzDj1R9Y96RnYjCk6k5xP4
+
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTc3NzU5MjY4NywiZXhwIjoxNzc3NjIxNDg3fQ.cYRsM9GAXpEO21RyTlMn87ygk5ZzNSJX3uBHqfePPY4 
+
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTc3NzU4NDMwNCwiZXhwIjoxNzc3NjEzMTA0fQ.QHKxW31Ji6QYNP5Kp3uYK5lyM9Hdlh0xJ7yfB1f_JVs
 
 POST http://localhost:3000/api/posts
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "title": "teste",
-  "content": "teste teste teste",
-  "userId": 12
+  "title": "teste 2 post outro novo usuario",
+  "content": "teste teste teste"
 }
 
 ###

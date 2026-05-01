@@ -12,10 +12,10 @@ POST http://localhost:3000/api/users
 Content-Type: application/json
 
 {
-  "firstName": "Marco Aurelio 3",
+  "firstName": "Marco Aurelio 6",
   "lastName": "Hansen",
   "phone": "2499544-5421",
-  "email": "m2@m.com",
+  "email": "m@m.com",
   "password": "david1234!"
 }
 
@@ -25,11 +25,12 @@ DELETE http://localhost:3000/api/users/2
 
 ###
 
-PATCH  http://localhost:3000/api/users/12
+PATCH  http://localhost:3000/api/users
 Content-Type: application/json
 
 {
-  "lastName": "Hansen de Oliveira"
+  "lastName": "Hansen de Oliveira",
+  "password": "dav"
 }
 
 ###

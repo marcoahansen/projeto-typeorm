@@ -22,8 +22,9 @@ export class PostController {
 
   create = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { title, content, userId } = req.body;
-      if (isNaN(userId)) {
+      const { title, content } = req.body;
+      const userId = req.user_id;
+      if (userId && isNaN(userId)) {
         throw new BadRequestError("Id do usuário inválido");
       }
       const user = await this.userRepository.findOneBy({ id: userId });
@@ -46,7 +47,8 @@ export class PostController {
   update = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const postId = Number(req.params.id);
-      const { title, content, userId } = req.body;
+      const { title, content } = req.body;
+      const userId = req.user_id;
       if (isNaN(postId)) {
         throw new BadRequestError("Id do post inválido");
       }
