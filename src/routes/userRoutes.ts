@@ -8,9 +8,9 @@ const userControler = new UserController();
 router.get("/", userControler.list);
 router.post("/", userControler.create);
 router.patch("/", authMiddleware, userControler.update);
-router.patch("/:id/toggle", userControler.toggleActive);
+router.patch("/:id/toggle", authMiddleware, userControler.toggleActive);
 router.get("/active", userControler.listActive);
 router.get("/:id", userControler.listById);
-router.delete("/:id", userControler.delete);
+router.delete("/:id", authMiddleware, userControler.delete);
 
 export const userRoutes = router;
