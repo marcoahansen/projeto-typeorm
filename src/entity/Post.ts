@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./User";
 import { IsNotEmpty, IsString, MinLength, Validate } from "class-validator";
-import { NoBlankSpaceConstraint } from "../decorators/NoBlankSpaces";
+import { NoBlankSpaceConstraint } from "../decorators/noBlankSpaces";
 
 @Entity()
 export class Post {

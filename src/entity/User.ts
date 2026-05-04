@@ -2,7 +2,6 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Post } from "./Post";
 import {
   IsEmail,
-  isNotEmpty,
   IsNotEmpty,
   IsString,
   MinLength,

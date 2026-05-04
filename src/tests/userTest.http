@@ -1,3 +1,5 @@
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImlhdCI6MTc3NzkzMjUzMiwiZXhwIjoxNzc3OTYxMzMyfQ.5uaBPR27lnk6YLBG6X6LBhp9rWyOVlLBlSkwT89D_H4
+
 GET http://localhost:3000/api/users
 
 ###
@@ -12,10 +14,10 @@ POST http://localhost:3000/api/users
 Content-Type: application/json
 
 {
-  "firstName": "Marco Aurelio 6",
-  "lastName": "Hansen",
-  "phone": "2499544-5421",
-  "email": "m@m.com",
+  "firstName": "Pedro",
+  "lastName": "Teste",
+  "phone": "2499999-5421",
+  "email": "p@p.com",
   "password": "david1234!"
 }
 
@@ -27,10 +29,10 @@ DELETE http://localhost:3000/api/users/2
 
 PATCH  http://localhost:3000/api/users
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 {
-  "lastName": "Hansen de Oliveira",
-  "password": "dav"
+  "email": "Hansen de Oliveira 22"
 }
 
 ###

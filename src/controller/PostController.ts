@@ -4,7 +4,6 @@ import { Post } from "../entity/Post";
 import { User } from "../entity/User";
 import { BadRequestError, NotFoundError } from "../helpers/apiError";
 import { validate } from "class-validator";
-import { IValidationError } from "../types/IValidationError";
 import { formatErrors } from "../helpers/formatErrors";
 
 export class PostController {
