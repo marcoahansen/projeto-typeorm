@@ -1,4 +1,4 @@
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTc3NzU5MjY4NywiZXhwIjoxNzc3NjIxNDg3fQ.cYRsM9GAXpEO21RyTlMn87ygk5ZzNSJX3uBHqfePPY4 
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImlhdCI6MTc3NzkzODA0NSwiZXhwIjoxNzc3OTY2ODQ1fQ.3_ogoxoVttLDIJ5pJcb2ZToia-5a1H5SrlgWH4XkLJs 
 
 // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImlhdCI6MTc3NzU5Mjc4NCwiZXhwIjoxNzc3NjIxNTg0fQ.gi5PXr-qMjYoU-flyPqt1AzDj1R9Y96RnYjCk6k5xP4
 
@@ -11,18 +11,17 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "title": "teste 2 post outro novo usuario",
+  "title": "Novo post",
   "content": "teste teste teste"
 }
 
 ###
-PATCH  http://localhost:3000/api/posts/8
+PATCH  http://localhost:3000/api/posts/12
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "title": "teste testando",
-  "userId": 12
+  "title": "teste teste novo teste"
 }
 
 ###
@@ -30,4 +29,6 @@ Authorization: Bearer {{authToken}}
 GET http://localhost:3000/api/posts
 
 ###
-DELETE  http://localhost:3000/api/posts/6
+DELETE  http://localhost:3000/api/posts/12
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
