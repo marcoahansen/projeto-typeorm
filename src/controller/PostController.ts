@@ -1,15 +1,8 @@
-import { AppDataSource } from "../data-source";
 import type { NextFunction, Request, Response } from "express";
-import { Post } from "../entity/Post";
-import { User } from "../entity/User";
 import { BadRequestError, NotFoundError } from "../helpers/apiError";
-import { validate } from "class-validator";
-import { formatErrors } from "../helpers/formatErrors";
 import { PostService } from "../service/PostService";
 
 export class PostController {
-  private postRepository = AppDataSource.getRepository(Post);
-  private userRepository = AppDataSource.getRepository(User);
   private postService = new PostService();
 
   list = async (req: Request, res: Response, next: NextFunction) => {
