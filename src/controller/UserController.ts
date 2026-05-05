@@ -82,4 +82,19 @@ export class UserController {
       next(error);
     }
   };
+  updateRole = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = Number(req.params.id);
+      const { role } = req.body;
+      if (isNaN(id)) {
+        throw new BadRequestError("ID inválido");
+      }
+      await this.userService.validateSchema({ role }, true);
+      const user = await this.userService.updateRole(id, role);
+      const { password: _, ...userPublic } = user;
+      return res.status(200).json({ message: "Cargo atualizado!", userPublic });
+    } catch (error: unknown) {
+      next(error);
+    }
+  };
 }

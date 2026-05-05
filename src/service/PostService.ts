@@ -1,7 +1,7 @@
 import { validate } from "class-validator";
 import { AppDataSource } from "../data-source";
 import { Post } from "../entity/Post";
-import { User } from "../entity/User";
+import { User, UserRole } from "../entity/User";
 import { formatErrors } from "../helpers/formatErrors";
 import {
   BadRequestError,
@@ -47,7 +47,7 @@ export class PostService {
     return await this.postRepository.save(post);
   };
 
-  delete = async (postId: number, userId: number) => {
+  delete = async (postId: number, userId: number, userRole: UserRole) => {
     const post = await this.postRepository.findOne({
       where: { id: postId },
       relations: ["user"],
@@ -55,9 +55,9 @@ export class PostService {
     if (!post) {
       throw new NotFoundError("Post não encontrado");
     }
-    if (post.user.id !== userId) {
+    if (userRole !== UserRole.ADMIN && post.user.id !== userId) {
       throw new UnauthorizedError(
-        "Você não tem permissão para atualizar esse post!"
+        "Você não tem permissão para deletar esse post!"
       );
     }
     return await this.postRepository.delete(postId);

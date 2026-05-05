@@ -12,7 +12,7 @@ export class AuthController {
       const { email, password } = req.body;
       const user = await this.userRepository.findOne({
         where: { email },
-        select: ["id", "password"],
+        select: ["id", "firstName", "password", "role"],
       });
 
       if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -20,11 +20,17 @@ export class AuthController {
       }
 
       const token = jwt.sign(
-        { id: user.id },
+        { id: user.id, role: user.role },
         process.env.JWT_PASS ?? "secret",
         { expiresIn: "8h" }
       );
-      return res.json({ token });
+      return res.json({
+        user: {
+          name: user.firstName,
+          role: user.role,
+        },
+        token,
+      });
     } catch (error) {
       next(error);
     }

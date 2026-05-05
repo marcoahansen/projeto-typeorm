@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { UnauthorizedError } from "../helpers/apiError";
 import jwt from "jsonwebtoken";
+import { UserRole } from "../entity/User";
 
 export const authMiddleware = async (
   req: Request,
@@ -16,9 +17,11 @@ export const authMiddleware = async (
   try {
     const payload = jwt.verify(token, process.env.JWT_PASS ?? "secret") as {
       id: number;
+      role: UserRole;
     };
 
     req.user_id = payload.id;
+    req.user_role = payload.role;
     next();
   } catch {
     throw new UnauthorizedError("Token inválido ou expirado");

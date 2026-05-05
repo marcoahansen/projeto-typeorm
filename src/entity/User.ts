@@ -2,12 +2,18 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Post } from "./Post";
 import {
   IsEmail,
+  IsEnum,
   IsNotEmpty,
   IsString,
   MinLength,
   Validate,
 } from "class-validator";
 import { IsBrPhoneConstraint } from "../decorators/isBrPhone";
+
+export enum UserRole {
+  ADMIN = "admin",
+  USER = "user",
+}
 
 @Entity()
 export class User {
@@ -33,6 +39,11 @@ export class User {
   @IsNotEmpty({ message: "A senha é obrigatória" })
   @MinLength(6, { message: "A senha deve ter no mínimo 6 caracteres" })
   password!: string;
+
+  @Column({ type: "enum", enum: UserRole, default: UserRole.USER })
+  @IsNotEmpty({ message: "O cargo (role) é obrigatório" })
+  @IsEnum(UserRole, { message: "Cargo inválido. Use 'admin' ou 'user'" })
+  role!: UserRole;
 
   @Column({ type: "varchar", length: 15, nullable: false })
   @IsNotEmpty({ message: "O celular é obrigatório" })

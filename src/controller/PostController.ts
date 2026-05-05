@@ -48,10 +48,11 @@ export class PostController {
     try {
       const id = Number(req.params.id);
       const userId = req.user_id;
+      const userRole = req.user_role;
       if (isNaN(id)) {
         throw new BadRequestError("ID inválido");
       }
-      await this.postService.delete(id, userId!);
+      await this.postService.delete(id, userId!, userRole!);
       return res.status(204).send();
     } catch (error: unknown) {
       next(error);
