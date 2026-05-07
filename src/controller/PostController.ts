@@ -8,7 +8,7 @@ export class PostController {
   list = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const posts = await this.postService.listAll();
-      return res.json(posts);
+      return res.status(200).json(posts);
     } catch (error: unknown) {
       next(error);
     }

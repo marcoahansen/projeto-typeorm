@@ -28,6 +28,7 @@ export class AuthController {
         user: {
           name: user.firstName,
           role: user.role,
+          id: user.id,
         },
         token,
       });
