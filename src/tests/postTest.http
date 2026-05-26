@@ -27,7 +27,7 @@ Authorization: Bearer {{authToken}}
 
 ###
 
-GET http://localhost:3000/api/posts
+GET http://localhost:3000/api/posts?page=2&limit=1
 
 ###
 DELETE  http://localhost:3000/api/posts/12

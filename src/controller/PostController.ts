@@ -7,8 +7,10 @@ export class PostController {
 
   list = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const posts = await this.postService.listAll();
-      return res.status(200).json(posts);
+      const page = Math.max(1, Number(req.query.page) || 1);
+      const limit = Math.max(1, Math.min(100, Number(req.query.limit) || 10));
+      const result = await this.postService.listAll(page, limit);
+      return res.status(200).json(result);
     } catch (error: unknown) {
       next(error);
     }

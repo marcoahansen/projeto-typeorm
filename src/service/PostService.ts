@@ -20,8 +20,29 @@ export class PostService {
       throw new BadRequestError("Falha de validação", formattedErrors);
     }
   };
-  listAll = async () => {
-    return await this.postRepository.find({ relations: ["user"] });
+  listAll = async (page: number, limit: number) => {
+    const skip = (page - 1) * limit;
+    const [posts, totalItems] = await this.postRepository.findAndCount({
+      take: limit,
+      skip: skip,
+      order: { id: "DESC" },
+      relations: ["user"],
+    });
+    // const query = `SELECT * FROM Post ORDER BY id LIMIT ${limit} OFFSET ${skip}`;
+    // const posts = await this.postRepository.query(query);
+    // console.log(posts); Mas precisaria também do total.
+    const totalPages = Math.ceil(totalItems / limit);
+    return {
+      data: posts,
+      meta: {
+        totalItems,
+        currentPage: page,
+        totalPages,
+        itemsPerPage: limit,
+        hasNext: page < totalPages,
+        hasPrevious: page > 1,
+      },
+    };
   };
   create = async (title: string, content: string, userId: number) => {
     const user = await this.userRepository.findOneBy({ id: userId });
