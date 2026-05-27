@@ -42,11 +42,46 @@ export class UserService {
     this.userRepository.merge(user, userData);
     return await this.userRepository.save(user);
   };
-  listAll = async () => {
-    return await this.userRepository.find();
+  listAll = async (page: number, limit: number) => {
+    const skip = (page - 1) * limit;
+    const [users, totalItems] = await this.userRepository.findAndCount({
+      take: limit,
+      skip: skip,
+      order: { id: "DESC" },
+    });
+    const totalPages = Math.ceil(totalItems / limit);
+    return {
+      data: users,
+      meta: {
+        totalItems,
+        currentPage: page,
+        totalPages,
+        itemsPerPage: limit,
+        hasNext: page < totalPages,
+        hasPrevious: page > 1,
+      },
+    };
   };
-  listActive = async (active = true) => {
-    return await this.userRepository.findBy({ isActive: active });
+  listActive = async (page: number, limit: number, active = true) => {
+    const skip = (page - 1) * limit;
+    const [users, totalItems] = await this.userRepository.findAndCount({
+      take: limit,
+      skip: skip,
+      where: { isActive: active },
+      order: { id: "DESC" },
+    });
+    const totalPages = Math.ceil(totalItems / limit);
+    return {
+      data: users,
+      meta: {
+        totalItems,
+        currentPage: page,
+        totalPages,
+        itemsPerPage: limit,
+        hasNext: page < totalPages,
+        hasPrevious: page > 1,
+      },
+    };
   };
   listById = async (id: number) => {
     const user = await this.userRepository.findOneBy({ id });

@@ -27,16 +27,20 @@ export class UserController {
   };
   list = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const users = await this.userService.listAll();
-      return res.json(users);
+      const page = Math.max(1, Number(req.query.page) || 1);
+      const limit = Math.max(1, Math.min(100, Number(req.query.limit) || 10));
+      const result = await this.userService.listAll(page, limit);
+      return res.status(200).json(result);
     } catch (error: unknown) {
       next(error);
     }
   };
   listActive = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const users = await this.userService.listActive();
-      return res.json(users);
+      const page = Math.max(1, Number(req.query.page) || 1);
+      const limit = Math.max(1, Math.min(100, Number(req.query.limit) || 10));
+      const result = await this.userService.listActive(page, limit);
+      return res.status(200).json(result);
     } catch (error: unknown) {
       next(error);
     }
