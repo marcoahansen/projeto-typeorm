@@ -12,6 +12,14 @@ import {
   HttpCode,
 } from "routing-controllers";
 import { OpenAPI } from "routing-controllers-openapi";
+import {
+  IsString,
+  IsEmail,
+  IsNotEmpty,
+  IsEnum,
+  IsOptional,
+  IsBoolean,
+} from "class-validator"; // Importar decorators
 import type { Request } from "express";
 
 import { UserService } from "../service/UserService";
@@ -20,6 +28,28 @@ import { UserRole } from "../entity/User";
 
 import { authMiddleware } from "../middlewares/authMiddleware";
 import { roleMiddleware } from "../middlewares/roleMiddleware";
+export class CreateUserDto {
+  firstName!: string;
+  lastName!: string;
+  email!: string;
+  password!: string;
+  phone!: string;
+  role?: UserRole;
+  isActive?: boolean;
+}
+
+export class UpdateUserDto {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  password?: string;
+  isActive?: boolean;
+}
+
+export class UpdateRoleDto {
+  role!: UserRole;
+}
 
 @JsonController("/api/users")
 export class UserController {
@@ -28,7 +58,7 @@ export class UserController {
   @Get("/")
   async list(
     @QueryParam("page") page: number = 1,
-    @QueryParam("limit") limit: number = 10,
+    @QueryParam("limit") limit: number = 10
   ) {
     const validPage = Math.max(1, Number(page) || 1);
     const validLimit = Math.max(1, Math.min(100, Number(limit) || 10));
@@ -38,7 +68,7 @@ export class UserController {
   @Get("/active")
   async listActive(
     @QueryParam("page") page: number = 1,
-    @QueryParam("limit") limit: number = 10,
+    @QueryParam("limit") limit: number = 10
   ) {
     const validPage = Math.max(1, Number(page) || 1);
     const validLimit = Math.max(1, Math.min(100, Number(limit) || 10));
@@ -53,8 +83,8 @@ export class UserController {
 
   @Post("/")
   @HttpCode(201)
-  async create(@Body() body: any) {
-    await this.userService.validateSchema(body);
+  async create(@Body() body: CreateUserDto) {
+    await this.userService.validateSchema(body as any);
     const newUser = await this.userService.create(body);
     const { password: _, ...userPublic } = newUser;
     return userPublic;
@@ -63,9 +93,9 @@ export class UserController {
   @Patch("/")
   @UseBefore(authMiddleware)
   @OpenAPI({ security: [{ jwt: [] }] })
-  async update(@Req() req: Request, @Body() body: any) {
+  async update(@Req() req: Request, @Body() body: UpdateUserDto) {
     const userId = req.user_id;
-    await this.userService.validateSchema(body, true);
+    await this.userService.validateSchema(body as any, true);
     const user = await this.userService.update(userId!, body);
     const { password: _, ...userPublic } = user;
     return userPublic;
@@ -78,7 +108,9 @@ export class UserController {
     if (isNaN(id)) throw new BadRequestError("ID inválido");
     const user = await this.userService.toggleActive(id);
     return {
-      message: `Utilizador ${user.isActive ? "ativado" : "desativado"} com sucesso.`,
+      message: `Usuário ${
+        user.isActive ? "ativado" : "desativado"
+      } com sucesso.`,
       user,
     };
   }
@@ -96,7 +128,7 @@ export class UserController {
   @Patch("/role/:id")
   @UseBefore(authMiddleware, roleMiddleware([UserRole.ADMIN]))
   @OpenAPI({ security: [{ jwt: [] }] })
-  async updateRole(@Param("id") id: number, @Body() body: { role: UserRole }) {
+  async updateRole(@Param("id") id: number, @Body() body: UpdateRoleDto) {
     if (isNaN(id)) throw new BadRequestError("ID inválido");
     return this.userService.updateRole(id, body.role);
   }

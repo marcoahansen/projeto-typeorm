@@ -4,12 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node --env-file=.env --import tsx --watch src/index.ts"
+    "dev": "node --env-file=.env --watch -r ts-node/register src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.19",
@@ -17,7 +16,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.6.0",
     "@types/swagger-ui-express": "^4.1.8",
-    "tsx": "^4.21.0",
+    "ts-node": "^10.9.2",
     "typescript": "^6.0.2"
   },
   "dependencies": {
