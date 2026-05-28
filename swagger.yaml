@@ -1,0 +1,462 @@
+openapi: 3.0.3
+info:
+  title: API Projeto TypeORM
+  description: Documentação completa das rotas de Autenticação, Usuários e Posts.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api
+    description: Servidor Local de Desenvolvimento
+
+paths:
+  /login:
+    post:
+      summary: Realiza o login de um usuário
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Login efetuado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "400":
+          description: E-mail ou senha inválidos
+
+  /users:
+    get:
+      summary: Lista todos os usuários (Paginado)
+      tags:
+        - Users
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: Lista de usuários retornada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserPaginated"
+
+    post:
+      summary: Cria um novo usuário
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCreate"
+      responses:
+        "201":
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "400":
+          description: Falha de validação ou e-mail já em uso
+
+    patch:
+      summary: Atualiza os dados do usuário autenticado
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdate"
+      responses:
+        "200":
+          description: Usuário atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+
+  /users/active:
+    get:
+      summary: Lista apenas usuários ativos (Paginado)
+      tags:
+        - Users
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: Lista de usuários ativos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserPaginated"
+
+  /users/{id}:
+    get:
+      summary: Procura um usuário pelo ID
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Usuário encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "404":
+          description: Usuário não encontrado
+
+    delete:
+      summary: Elimina um usuário
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Usuário eliminado com sucesso
+        "404":
+          description: Usuário não encontrado
+
+  /users/{id}/toggle:
+    patch:
+      summary: Ativa ou desativa um usuário
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Estado do usuário alterado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Usuário desativado com sucesso."
+                  user:
+                    $ref: "#/components/schemas/UserResponse"
+
+  /users/role/{id}:
+    patch:
+      summary: Atualiza o cargo (role) de um usuário (Apenas Admin)
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - role
+              properties:
+                role:
+                  type: string
+                  enum: [admin, user]
+      responses:
+        "200":
+          description: Cargo atualizado com sucesso
+        "403":
+          description: Acesso negado - Requer privilégios de Admin
+
+  /posts:
+    get:
+      summary: Lista todos os posts (Paginado)
+      tags:
+        - Posts
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: Lista de posts obtida com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostPaginated"
+
+    post:
+      summary: Cria um novo post
+      tags:
+        - Posts
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostCreate"
+      responses:
+        "201":
+          description: Post criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponse"
+
+  /posts/{id}:
+    patch:
+      summary: Atualiza um post existente (Apenas o autor)
+      tags:
+        - Posts
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostUpdate"
+      responses:
+        "200":
+          description: Post atualizado com sucesso
+        "401":
+          description: Permissão negada para atualizar este post
+
+    delete:
+      summary: Elimina um post (Autor ou Admin)
+      tags:
+        - Posts
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Post eliminado com sucesso
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: usuario@email.com
+        password:
+          type: string
+          format: password
+          example: senha123
+
+    LoginResponse:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            role:
+              type: string
+              enum: [admin, user]
+        token:
+          type: string
+
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          enum: [admin, user]
+        isActive:
+          type: boolean
+
+    UserCreate:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+        - password
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 6
+
+    UserUpdate:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+
+    UserPaginated:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserResponse"
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+
+    PostResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+        user:
+          $ref: "#/components/schemas/UserResponse"
+
+    PostCreate:
+      type: object
+      required:
+        - title
+        - content
+      properties:
+        title:
+          type: string
+          minLength: 5
+        content:
+          type: string
+
+    PostUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 5
+        content:
+          type: string
+
+    PostPaginated:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/PostResponse"
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+
+    PaginationMeta:
+      type: object
+      properties:
+        totalItems:
+          type: integer
+        currentPage:
+          type: integer
+        totalPages:
+          type: integer
+        itemsPerPage:
+          type: integer
+        hasNext:
+          type: boolean
+        hasPrevious:
+          type: boolean
